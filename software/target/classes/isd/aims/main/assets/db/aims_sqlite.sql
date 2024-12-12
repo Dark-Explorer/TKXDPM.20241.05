@@ -10,18 +10,25 @@ PRAGMA foreign_keys = OFF;
 ATTACH "aims.sdb" AS "aims";
 BEGIN;
 CREATE TABLE "aims"."Media"(
-  "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  "type" VARCHAR(45) NOT NULL,
-  "category" VARCHAR(45) NOT NULL,
-  "price" INTEGER NOT NULL,
-  "quantity" INTEGER NOT NULL,
-  "title" VARCHAR(45) NOT NULL,
-  "value" INTEGER NOT NULL,
-  "imageUrl" VARCHAR(45) NOT NULL
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "type" VARCHAR(45) NOT NULL,
+    "category" VARCHAR(45) NOT NULL,
+    "price" INTEGER NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "title" VARCHAR(45) NOT NULL,
+    "value" INTEGER NOT NULL,
+    "imageUrl" VARCHAR(45) NOT NULL,
+    "description" VARCHAR(100) NOT NULL,
+    "barcode" VARCHAR(45) NOT NULL,
+    "dimension" VARCHAR(45) NOT NULL,
+    "weight" FLOAT NOT NULL,
+    "warehouseEntryDate" VARCHAR(45) NOT NULL,
+    "isAvailableForRush" INTEGER NOT NULL
 );
 CREATE TABLE "aims"."CD"(
   "id" INTEGER PRIMARY KEY NOT NULL,
   "artist" VARCHAR(45) NOT NULL,
+  "tracklist" VARCHAR(45) NOT NULL,
   "recordLabel" VARCHAR(45) NOT NULL,
   "musicType" VARCHAR(45) NOT NULL,
   "releasedDate" DATE,
@@ -58,6 +65,7 @@ CREATE TABLE "aims"."DVD"(
   "subtitle" VARCHAR(45) NOT NULL,
   "releasedDate" DATETIME,
   "filmType" VARCHAR(45) NOT NULL,
+  "language" VARCHAR(45) NOT NULL,
   CONSTRAINT "fk_dvd_media"
     FOREIGN KEY("id")
     REFERENCES "Media"("id")
@@ -110,4 +118,30 @@ CREATE TABLE "aims"."Card"(
     REFERENCES "User"("id")
 );
 CREATE INDEX "aims"."Card.fk_card_user_idx" ON "Card" ("userID");
+
+CREATE TABLE "aims"."DeliveryInfo"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "orderID" INTEGER NOT NULL,
+    "name" VARCHAR(45) NOT NULL,
+    "address" VARCHAR(100) NOT NULL,
+    "province" VARCHAR(45) NOT NULL,
+    "instruction" VARCHAR(100) NOT NULL,
+    "phoneNumber" VARCHAR(45) NOT NULL,
+    "email" VARCHAR(45) NOT NULL,
+    CONSTRAINT "fk_deliveryinfo_order"
+    FOREIGN KEY("orderID")
+    REFERENCES "Order"("id")
+);
+CREATE INDEX "aims"."DeliveryInfo.fk_deliveryinfo_order_idx" ON "DeliveryInfo" ("orderID");
+
+CREATE TABLE "aims"."RushInfo"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "orderID" INTEGER NOT NULL,
+    "instruction" VARCHAR(100) NOT NULL,
+    "timeDelivery" DATETIME NOT NULL,
+    CONSTRAINT "fk_rushinfo_order"
+    FOREIGN KEY("orderID")
+    REFERENCES "Order"("id")
+);
+CREATE INDEX "aims"."RushInfo.fk_rushinfo_order_idx" ON "RushInfo" ("orderID");
 COMMIT;
