@@ -82,7 +82,7 @@ public class DeliveryForm extends BaseForm implements Initializable {
 		// calculate shipping fees
 		int shippingFees = getBController().calculateShippingFee(order);
 		order.setShippingFees(shippingFees);
-		order.setDeliveryInfo(messages);
+		order.setDeliveryInfo(null);
 
 		// create invoice screen
 		Invoice invoice = getBController().createInvoice(order);
