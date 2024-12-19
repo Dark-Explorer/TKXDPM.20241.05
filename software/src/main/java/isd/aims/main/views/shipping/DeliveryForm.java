@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.time.LocalDateTime;
 
 import isd.aims.main.exception.InvalidDeliveryInfoException;
 import isd.aims.main.controller.PlaceOrderController;
@@ -67,7 +68,7 @@ public class DeliveryForm extends BaseForm implements Initializable {
         });
 		this.province.getItems().addAll(Configs.PROVINCES);
 
-		if !(order.rushInfo){
+		if (order.getRushInfo() == null){
 			rushNote.setDisable(true);
 			rushTime.setDisable(true);
 		}
