@@ -43,6 +43,12 @@ public class DeliveryForm extends BaseForm implements Initializable {
 	@FXML
 	private ComboBox<String> province;
 
+	@FXML
+	private TextField rushTime;
+
+	@FXML
+	private TextField rushNote;
+
 	private Order order;
 
 	public DeliveryForm(Stage stage, String screenPath, Order order) throws IOException {
@@ -60,6 +66,11 @@ public class DeliveryForm extends BaseForm implements Initializable {
             }
         });
 		this.province.getItems().addAll(Configs.PROVINCES);
+
+		if !(order.rushInfo){
+			rushNote.setDisable(true);
+			rushTime.setDisable(true);
+		}
 	}
 
 	@FXML
@@ -78,6 +89,17 @@ public class DeliveryForm extends BaseForm implements Initializable {
 		} catch (InvalidDeliveryInfoException e) {
 			throw new InvalidDeliveryInfoException(e.getMessage());
 		}
+
+		// Handle rush information if applicable
+    if (order.getRushInfo() != null) {
+        // Nếu là đơn hàng rush, gán rushInfo từ giao diện
+        String rushTimeText = rushTime.getText();
+        String rushNoteText = rushNote.getText();
+
+        // Gán rushTime và rushNote vào RushInfo
+        order.getRushInfo().setInstruction(rushNoteText);
+        order.getRushInfo().setTimeDelivery(LocalDateTime.parse(rushTimeText));
+    }
 
 		// calculate shipping fees
 		int shippingFees = getBController().calculateShippingFee(order);
