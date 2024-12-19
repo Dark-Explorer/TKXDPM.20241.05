@@ -96,6 +96,10 @@ public class DeliveryForm extends BaseForm implements Initializable {
         String rushTimeText = rushTime.getText();
         String rushNoteText = rushNote.getText();
 
+		//Gán rushTime và rushNote vào message
+		messages.put("rushTime", rushTimeText);
+		messages.put("rushNote", rushNoteText);
+
         // Gán rushTime và rushNote vào RushInfo
         order.getRushInfo().setInstruction(rushNoteText);
         order.getRushInfo().setTimeDelivery(LocalDateTime.parse(rushTimeText));
