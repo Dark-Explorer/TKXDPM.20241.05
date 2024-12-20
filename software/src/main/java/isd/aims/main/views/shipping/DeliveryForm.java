@@ -6,7 +6,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.time.LocalDateTime;
-import javafx.scene.control.Alert;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 
 import isd.aims.main.exception.InvalidDeliveryInfoException;
@@ -21,11 +24,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 
 public class DeliveryForm extends BaseForm implements Initializable {
 
@@ -48,10 +51,19 @@ public class DeliveryForm extends BaseForm implements Initializable {
 	private ComboBox<String> province;
 
 	@FXML
-	private TextField rushTime;
+	private HBox rushTime;
 
 	@FXML
 	private TextField rushNote;
+
+	@FXML
+	private ComboBox<Integer> hour;
+
+	@FXML
+	private ComboBox<Integer> minute;
+
+	@FXML
+	private DatePicker date;
 
 	private Order order;
 
@@ -61,7 +73,9 @@ public class DeliveryForm extends BaseForm implements Initializable {
 
 		if (!containsRushMedia(order)) {
 			rushNote.setDisable(true);
-			rushTime.setDisable(true);
+			minute.setDisable(true);
+			hour.setDisable(true);
+			date.setDisable(true);
 		}
 	}
 
@@ -75,6 +89,14 @@ public class DeliveryForm extends BaseForm implements Initializable {
             }
         });
 		this.province.getItems().addAll(Configs.PROVINCES);
+		hour.setItems(FXCollections.observableArrayList(
+				0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
+		));
+
+		// Thêm các giá trị phút vào ComboBox
+		minute.setItems(FXCollections.observableArrayList(
+				0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55
+		));
 	}
 
 	@FXML
@@ -107,15 +129,12 @@ public class DeliveryForm extends BaseForm implements Initializable {
 			return;
 
 		// Kiểm tra Rush Info
-		if (containsRushMedia(order)) {
-			String rushTimeText = rushTime.getText();
-
-			// Kiểm tra Rush Time
-			if (rushTimeText.isEmpty()) {
-				showAlert("Rush time không thể để trống");
+		if (containsRushMedia(order)){
+			LocalDateTime rushDateTime = getValidFutureDateTime(date, hour, minute);
+			if (rushDateTime == null)
 				return;
-			}
 		}
+
 
 
 		// add info to messages
@@ -136,12 +155,12 @@ public class DeliveryForm extends BaseForm implements Initializable {
 		// Handle rush information if applicable
     if (order.getRushInfo() != null) {
         // Nếu là đơn hàng rush, gán rushInfo từ giao diện
-        String rushTimeText = rushTime.getText();
+		LocalDateTime rushDateTime = getValidFutureDateTime(date, hour, minute);
         String rushNoteText = rushNote.getText();
 
         // Gán rushTime và rushNote vào RushInfo
-        order.getRushInfo().setInstruction(rushNoteText);
-        order.getRushInfo().setTimeDelivery(LocalDateTime.parse(rushTimeText));
+		order.getRushInfo().setTimeDelivery(rushDateTime);
+		order.getRushInfo().setInstruction(rushNoteText);
     }
 
 		// calculate shipping fees
@@ -196,7 +215,6 @@ public class DeliveryForm extends BaseForm implements Initializable {
 
 	public static boolean containsRushMedia(Order order) {
 		if (order == null || order.getlstOrderMedia() == null) {
-			System.out.println("\n\n\n\n\n");
 			return false;  // Nếu order hoặc lstOrderMedia là null thì không có media nào
 		}
 
@@ -213,5 +231,37 @@ public class DeliveryForm extends BaseForm implements Initializable {
 		}
 		return false;  // Nếu không có media nào có thể rush, trả về false
 	}
+
+	private LocalDateTime getValidFutureDateTime(DatePicker datePicker, ComboBox<Integer> hourComboBox, ComboBox<Integer> minuteComboBox) {
+		// Kiểm tra giá trị của DatePicker
+		LocalDate selectedDate = datePicker.getValue();
+		if (selectedDate == null) {
+			showAlert("Vui lòng chọn ngày.");
+			return null;
+		}
+
+		// Kiểm tra giá trị của ComboBox
+		Integer selectedHour = hourComboBox.getValue();
+		Integer selectedMinute = minuteComboBox.getValue();
+		if (selectedHour == null || selectedMinute == null) {
+			showAlert("Vui lòng chọn giờ và phút.");
+			return null;
+		}
+
+		// Chuyển đổi thành LocalDateTime và kiểm tra
+		LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, LocalTime.of(selectedHour, selectedMinute));
+
+		// So sánh với thời gian hiện tại
+		if (!selectedDateTime.isAfter(LocalDateTime.now())) {
+			showAlert("Thời gian đã chọn phải nằm trong tương lai.");
+			return null;
+		}
+
+		// Nếu hợp lệ, trả về thời gian đã chọn
+		return selectedDateTime;
+	}
+
+
+
 
 }
