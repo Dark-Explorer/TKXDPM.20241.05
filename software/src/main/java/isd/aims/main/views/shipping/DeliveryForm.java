@@ -55,6 +55,11 @@ public class DeliveryForm extends BaseForm implements Initializable {
 	public DeliveryForm(Stage stage, String screenPath, Order order) throws IOException {
 		super(stage, screenPath);
 		this.order = order;
+
+		if (order.getRushInfo() == null) {
+			rushNote.setDisable(true);
+			rushTime.setDisable(true);
+		}
 	}
 
 	@Override
@@ -67,11 +72,6 @@ public class DeliveryForm extends BaseForm implements Initializable {
             }
         });
 		this.province.getItems().addAll(Configs.PROVINCES);
-
-		if (order.getRushInfo() == null) {
-			rushNote.setDisable(true);
-			rushTime.setDisable(true);
-		}
 	}
 
 	@FXML
