@@ -23,9 +23,6 @@
                <children>
                   <ImageView fx:id="image" fitHeight="103.0" fitWidth="95.0" pickOnBounds="true"
                      preserveRatio="true">
-                     <image>
-                        <Image url="/isd/aims/main/fxml/images/Logo.png" />
-                     </image>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
