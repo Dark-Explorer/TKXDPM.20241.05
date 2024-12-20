@@ -144,8 +144,8 @@
                   <HBox fx:id="rushTime" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                      <children>
                         <DatePicker fx:id="date" maxWidth="150.0" prefHeight="50.0" translateY="100.0" />
-                        <ComboBox fx:id="hour" prefHeight="50.0" prefWidth="50.0" translateY="100.0" visibleRowCount="6" />
-                        <ComboBox fx:id="minute" prefHeight="50.0" prefWidth="50.0" translateY="100.0" />
+                        <ComboBox fx:id="hour" prefHeight="50.0" prefWidth="75.0" translateY="100.0" visibleRowCount="6" />
+                        <ComboBox fx:id="minute" prefHeight="50.0" prefWidth="75.0" translateY="100.0" />
                      </children>
                   </HBox>
                   <Pane layoutX="10.0" layoutY="166.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="6">
