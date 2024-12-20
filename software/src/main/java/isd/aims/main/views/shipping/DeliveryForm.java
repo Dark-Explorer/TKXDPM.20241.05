@@ -13,6 +13,7 @@ import isd.aims.main.exception.InvalidDeliveryInfoException;
 import isd.aims.main.controller.PlaceOrderController;
 import isd.aims.main.entity.invoice.Invoice;
 import isd.aims.main.entity.order.Order;
+import isd.aims.main.entity.order.OrderMedia;
 import isd.aims.main.utils.Configs;
 import isd.aims.main.views.BaseForm;
 import isd.aims.main.views.invoice.InvoiceForm;
@@ -58,7 +59,7 @@ public class DeliveryForm extends BaseForm implements Initializable {
 		super(stage, screenPath);
 		this.order = order;
 
-		if (order.getRushInfo() == null) {
+		if (!containsRushMedia(order)) {
 			rushNote.setDisable(true);
 			rushTime.setDisable(true);
 		}
@@ -106,7 +107,7 @@ public class DeliveryForm extends BaseForm implements Initializable {
 			return;
 
 		// Kiểm tra Rush Info
-		if (order.getRushInfo() != null) {
+		if (containsRushMedia(order)) {
 			String rushTimeText = rushTime.getText();
 
 			// Kiểm tra Rush Time
@@ -191,6 +192,26 @@ public class DeliveryForm extends BaseForm implements Initializable {
 			return false;
 		}
 		return true;
+	}
+
+	public static boolean containsRushMedia(Order order) {
+		if (order == null || order.getlstOrderMedia() == null) {
+			System.out.println("\n\n\n\n\n");
+			return false;  // Nếu order hoặc lstOrderMedia là null thì không có media nào
+		}
+
+		// Duyệt qua danh sách lstOrderMedia để kiểm tra xem có media nào có thể rush
+		for (Object obj : order.getlstOrderMedia()) {
+			System.out.println(order.getlstOrderMedia());
+			if (obj instanceof OrderMedia) {
+				OrderMedia om = (OrderMedia) obj;
+				System.out.println(om.isRush());
+				if (om.isRush()) {  // Kiểm tra xem media có là rush không
+					return true;  // Nếu có media nào có thể rush, trả về true
+				}
+			}
+		}
+		return false;  // Nếu không có media nào có thể rush, trả về false
 	}
 
 }
