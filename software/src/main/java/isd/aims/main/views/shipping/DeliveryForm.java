@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.time.LocalDateTime;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import isd.aims.main.exception.InvalidDeliveryInfoException;
 import isd.aims.main.controller.PlaceOrderController;
@@ -77,13 +79,52 @@ public class DeliveryForm extends BaseForm implements Initializable {
 	@FXML
 	void submitDeliveryInfo(MouseEvent event) throws IOException, InterruptedException, SQLException {
 
+		// Lấy thông tin từ các trường
+		String nameText = name.getText();
+		String phoneText = phone.getText();
+		String addressText = address.getText();
+		String instructionsText = instructions.getText();
+		String provinceText = province.getValue();
+
+		// Kiểm tra các trường bắt buộc
+		if (!validateRequiredFields(nameText, phoneText, addressText, provinceText))
+			return;
+
+		// Kiểm tra tính hợp lệ của tên
+		if (!validateField(nameText, "Tên không hợp lệ",
+							getBController().validateName(nameText)))
+			return;
+
+		// Kiểm tra tính hợp lệ của địa chỉ
+		if (!validateField(addressText, "Địa chỉ không hợp lệ",
+							getBController().validateAddress(addressText)))
+			return;
+
+		// Kiểm tra tính hợp lệ của số điện thoại
+		if (!validateField(phoneText, "Số điện thoại không hợp lệ",
+							getBController().validatePhoneNumber(phoneText)))
+			return;
+
+		// Kiểm tra Rush Info
+		if (order.getRushInfo() != null) {
+			String rushTimeText = rushTime.getText();
+
+			// Kiểm tra Rush Time
+			if (rushTimeText.isEmpty()) {
+				showAlert("Rush time không thể để trống");
+				return;
+			}
+		}
+
+
 		// add info to messages
 		HashMap<String, String> messages = new HashMap<>();
-		messages.put("name", name.getText());
-		messages.put("phone", phone.getText());
-		messages.put("address", address.getText());
-		messages.put("instructions", instructions.getText());
-		messages.put("province", province.getValue());
+		messages.put("name", nameText);
+		messages.put("phone", phoneText);
+		messages.put("address", addressText);
+		messages.put("instructions", instructionsText);
+		messages.put("province", provinceText);
+
 		try {
 			// process and validate delivery info
 			getBController().processDeliveryInfo(messages);
@@ -123,6 +164,33 @@ public class DeliveryForm extends BaseForm implements Initializable {
 
 	public void notifyError(){
 		// TODO: implement later on if we need
+	}
+
+	private void showAlert(String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Lỗi");
+		alert.setHeaderText(null); // Không cần header
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
+
+	private boolean validateRequiredFields(String nameText, String phoneText, String addressText, String provinceText) {
+		if (nameText.isEmpty() ||
+				phoneText.isEmpty() ||
+				addressText.isEmpty() ||
+				provinceText == null) {
+			showAlert("Các trường bắt buộc không thể để trống! Vui lòng điền đầy đủ thông tin như Tên, Số điện thoại, Địa chỉ và Tỉnh/Thành phố.");
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validateField(String fieldText, String validationMessage, boolean isValid) {
+		if (!isValid) {
+			showAlert(validationMessage);
+			return false;
+		}
+		return true;
 	}
 
 }
