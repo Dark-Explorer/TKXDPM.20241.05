@@ -74,7 +74,8 @@ public class Media {
                 .setCategory(res.getString("category"))
                 .setMediaURL(res.getString("imageUrl"))
                 .setPrice(res.getInt("price"))
-                .setType(res.getString("type"));
+                .setType(res.getString("type"))
+                .setAvailableForRush(res.getBoolean("isAvailableForRush"));
         }
         return null;
     }
@@ -91,7 +92,8 @@ public class Media {
                 .setCategory(res.getString("category"))
                 .setMediaURL(res.getString("imageUrl"))
                 .setPrice(res.getInt("price"))
-                .setType(res.getString("type"));
+                .setType(res.getString("type"))
+                .setAvailableForRush(res.getBoolean("isAvailableForRush"));
             medium.add(media);
         }
         return medium;
@@ -188,7 +190,12 @@ public class Media {
     }
 
     public boolean isAvailableForRush() {
-        return isAvailableForRush;
+        return this.isAvailableForRush;
+    }
+
+    public Media setAvailableForRush(boolean isAvailableForRush) {
+        this.isAvailableForRush = isAvailableForRush;
+        return this;
     }
 
     @Override
