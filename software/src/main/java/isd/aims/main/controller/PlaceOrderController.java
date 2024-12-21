@@ -137,7 +137,7 @@ public class PlaceOrderController extends BaseController{
         for (Object object : order.getlstOrderMedia()) {
             OrderMedia om = (OrderMedia) object;
             if (!om.isRush()) {
-                totalValue += om.getPrice();
+                totalValue += om.getPrice() * om.getQuantity();
                 weightOfHeaviestNoRushItem = Math.max(weightOfHeaviestNoRushItem, om.getMedia().getWeight());
             } else {
                 weightOfHeaviestRushItem = Math.max(weightOfHeaviestRushItem, om.getMedia().getWeight());
