@@ -2,14 +2,16 @@ package isd.aims.main.views.shipping;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import isd.aims.main.entity.db.DBConnection;
 import isd.aims.main.entity.info.DeliveryInfo;
+import isd.aims.main.entity.info.RushInfo;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 
@@ -28,7 +30,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 
 public class DeliveryForm extends BaseForm implements Initializable {
@@ -171,6 +172,14 @@ public class DeliveryForm extends BaseForm implements Initializable {
 		int shippingFees = getBController().calculateShippingFee(order);
 		order.setShippingFees(shippingFees);
 
+		System.out.println(order.getId());
+		System.out.println(order.getShippingFees());
+		System.out.println(order.getDeliveryInfo());
+		System.out.println(order.getRushInfo());
+		System.out.println(order.getlstOrderMedia());
+
+		insertOrder(order);
+
 		// create invoice screen
 		Invoice invoice = getBController().createInvoice(order);
 		BaseForm InvoiceScreenHandler = new InvoiceForm(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
@@ -179,6 +188,69 @@ public class DeliveryForm extends BaseForm implements Initializable {
 		InvoiceScreenHandler.setScreenTitle("Invoice Screen");
 		InvoiceScreenHandler.setBController(getBController());
 		InvoiceScreenHandler.show();
+	}
+
+	public static void insertOrder(Order order) throws SQLException {
+		String insertOrderSQL = "INSERT INTO \"Orders\" (shipping_fee) VALUES (?)";
+		String insertDeliveryInfoSQL = "INSERT INTO \"DeliveryInfo\" (name, phoneNumber, address, instruction, province, orderID, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		String insertRushInfoSQL = "INSERT INTO \"RushInfo\" (timeDelivery, instruction, orderID) VALUES (?, ?, ?)";
+		String insertOrderMediaSQL = "INSERT INTO \"OrderMedia\" (orderID, mediaID, price, quantity, isRush) VALUES (?, ?, ?, ?, ?)";
+
+		try {
+			int orderId;
+			try (PreparedStatement pstmtOrder = DBConnection.getConnection().prepareStatement(insertOrderSQL)) {
+
+				pstmtOrder.setInt(1, order.getShippingFees());
+				pstmtOrder.executeUpdate();
+
+				Statement stm = DBConnection.getConnection().createStatement();
+				try (ResultSet rs = stm.executeQuery("SELECT last_insert_rowid()")) {
+					if (rs.next()) {
+						orderId = rs.getInt(1);
+						order.setId(orderId);
+					} else {
+						throw new SQLException("Failed to get generated order ID");
+					}
+				}
+			}
+
+			try (PreparedStatement pstmtDelivery = DBConnection.getConnection().prepareStatement(insertDeliveryInfoSQL)) {
+				DeliveryInfo deliveryInfo = order.getDeliveryInfo();
+				pstmtDelivery.setString(1, deliveryInfo.getName());
+				pstmtDelivery.setString(2, deliveryInfo.getPhoneNumber());
+				pstmtDelivery.setString(3, deliveryInfo.getAddress());
+				pstmtDelivery.setString(4, deliveryInfo.getInstruction());
+				pstmtDelivery.setString(5, deliveryInfo.getProvince());
+				pstmtDelivery.setInt(6, orderId);
+				pstmtDelivery.setString(7, "random@gmail.com");
+				pstmtDelivery.executeUpdate();
+			}
+
+			if (order.getRushInfo() != null) {
+				try (PreparedStatement pstmtRush = DBConnection.getConnection().prepareStatement(insertRushInfoSQL)) {
+					RushInfo rushInfo = order.getRushInfo();
+					pstmtRush.setObject(1, rushInfo.getTimeDelivery());
+					pstmtRush.setString(2, rushInfo.getInstruction());
+					pstmtRush.setInt(3, orderId);
+					pstmtRush.executeUpdate();
+				}
+			}
+
+			try (PreparedStatement pstmtMedia = DBConnection.getConnection().prepareStatement(insertOrderMediaSQL)) {
+				for (Object media : order.getlstOrderMedia()) {
+					OrderMedia om = (OrderMedia) media;
+					pstmtMedia.setInt(1, orderId);
+					pstmtMedia.setInt(2, om.getMedia().getId());
+					pstmtMedia.setInt(3, om.getPrice());
+					pstmtMedia.setInt(4, om.getQuantity());
+					pstmtMedia.setBoolean(5, om.isRush());
+					pstmtMedia.executeUpdate();
+				}
+			}
+
+		} catch (SQLException e) {
+			throw new SQLException("Failed to insert order: " + e.getMessage(), e);
+		}
 	}
 
 	public PlaceOrderController getBController(){
@@ -263,8 +335,4 @@ public class DeliveryForm extends BaseForm implements Initializable {
 		// Nếu hợp lệ, trả về thời gian đã chọn
 		return selectedDateTime;
 	}
-
-
-
-
 }
