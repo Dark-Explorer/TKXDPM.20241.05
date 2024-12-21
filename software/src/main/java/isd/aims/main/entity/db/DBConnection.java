@@ -15,7 +15,7 @@ public class DBConnection {
 
         try {
 			Class.forName("org.sqlite.JDBC");
-            String connectionString = "jdbc:sqlite:software/src/main/resources/isd/aims/main/assets/db/aims.sdb";
+            String connectionString = "jdbc:sqlite:src/main/resources/isd/aims/main/assets/db/aims.sdb";
             connect = DriverManager.getConnection(connectionString);
             LOGGER.info("Connect database successfully");
             return connect;
