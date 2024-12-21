@@ -131,8 +131,8 @@ public class PlaceOrderController extends BaseController{
         int totalValue = 0;
         int numberOfRushItems = 0;
 
-        float weightOfHeaviestNoRushItem = 0;
-        float weightOfHeaviestRushItem = 0;
+        float weightOfHeaviestNoRushItem = 0f;
+        float weightOfHeaviestRushItem = 0f;
 
         for (Object object : order.getlstOrderMedia()) {
             OrderMedia om = (OrderMedia) object;
@@ -157,7 +157,7 @@ public class PlaceOrderController extends BaseController{
     }
 
     private int calculateWithWeight(float weight, String province) {
-        if (weight == 0) return 0;
+        if (weight == 0f) return 0;
 
         int fee;
         if (province.equals("Hà Nội") || province.equals("Hồ Chí Minh")) {

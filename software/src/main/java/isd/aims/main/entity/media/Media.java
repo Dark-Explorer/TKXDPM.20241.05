@@ -75,7 +75,8 @@ public class Media {
                 .setMediaURL(res.getString("imageUrl"))
                 .setPrice(res.getInt("price"))
                 .setType(res.getString("type"))
-                .setAvailableForRush(res.getBoolean("isAvailableForRush"));
+                .setAvailableForRush(res.getBoolean("isAvailableForRush"))
+                .setWeight(res.getFloat("weight"));
         }
         return null;
     }
@@ -93,7 +94,8 @@ public class Media {
                 .setMediaURL(res.getString("imageUrl"))
                 .setPrice(res.getInt("price"))
                 .setType(res.getString("type"))
-                .setAvailableForRush(res.getBoolean("isAvailableForRush"));
+                .setAvailableForRush(res.getBoolean("isAvailableForRush"))
+                .setWeight(res.getFloat("weight"));
             medium.add(media);
         }
         return medium;
@@ -195,6 +197,11 @@ public class Media {
 
     public Media setAvailableForRush(boolean isAvailableForRush) {
         this.isAvailableForRush = isAvailableForRush;
+        return this;
+    }
+
+    public Media setWeight(float weight) {
+        this.weight = weight;
         return this;
     }
 

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import isd.aims.main.entity.info.DeliveryInfo;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 
@@ -152,6 +153,8 @@ public class DeliveryForm extends BaseForm implements Initializable {
 			throw new InvalidDeliveryInfoException(e.getMessage());
 		}
 
+		DeliveryInfo deliveryInfo = new DeliveryInfo(nameText, phoneText, addressText, provinceText, instructionsText, "@gmail.com");
+
 		// Handle rush information if applicable
     if (order.getRushInfo() != null) {
         // Nếu là đơn hàng rush, gán rushInfo từ giao diện
@@ -164,9 +167,9 @@ public class DeliveryForm extends BaseForm implements Initializable {
     }
 
 		// calculate shipping fees
+		order.setDeliveryInfo(deliveryInfo);
 		int shippingFees = getBController().calculateShippingFee(order);
 		order.setShippingFees(shippingFees);
-		order.setDeliveryInfo(null);
 
 		// create invoice screen
 		Invoice invoice = getBController().createInvoice(order);
