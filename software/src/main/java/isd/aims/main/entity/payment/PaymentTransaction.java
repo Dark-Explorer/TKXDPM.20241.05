@@ -9,16 +9,14 @@ public class PaymentTransaction {
 	private String errorCode;
 	private String transactionId;
 	private String transactionContent;
-	private int amount;
+	private long amount;
 	private Integer orderID;
 	private Date createdAt;
 
 	public PaymentTransaction(String errorCode, String transactionId, String transactionContent,
-							  int amount, Date createdAt) {
+							  long amount, Date createdAt) {
 		super();
 		this.errorCode = errorCode;
-
-
 		this.transactionId = transactionId;
 		this.transactionContent = transactionContent;
 		this.amount = amount;
@@ -27,13 +25,13 @@ public class PaymentTransaction {
 
 	public void save(int orderId) throws SQLException {
 		this.orderID = orderId;
-		Statement stm = DBConnection.getConnection().createStatement();
-		String query = "INSERT INTO \"Transaction\" ( orderID, createAt, content) " +
-				"VALUES ( ?, ?, ?)";
+		String query = "INSERT INTO \"Transaction\" ( orderID, createAt, content, amount) " +
+				"VALUES ( ?, ?, ?, ?)";
 		try (PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(query)) {
-			preparedStatement.setInt(1, 1);
+			preparedStatement.setInt(1, orderId);
 			preparedStatement.setDate(2, new java.sql.Date(createdAt.getTime()));
 			preparedStatement.setString(3,transactionContent );
+			preparedStatement.setLong(4, amount);
 
 			preparedStatement.executeUpdate();
 		} catch (Exception exception) {

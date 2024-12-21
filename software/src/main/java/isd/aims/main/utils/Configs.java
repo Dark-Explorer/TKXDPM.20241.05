@@ -38,9 +38,9 @@ public class Configs {
 	public static float PERCENT_VAT = 10;
 
 	// static resource
-	public static final String IMAGE_PATH = "src/main/resources/isd/aims/main/fxml/";
-	public static final String IMAGE_PATH_ICON = "src/main/resources/isd/aims/main/fxml/images";
-	public static final String RESOURCES_PATH = "src/main/resources/isd/aims/main";
+	public static final String IMAGE_PATH = "software/src/main/resources/isd/aims/main/fxml/";
+	public static final String IMAGE_PATH_ICON = "software/src/main/resources/isd/aims/main/fxml/images";
+	public static final String RESOURCES_PATH = "software/src/main/resources/isd/aims/main";
 	public static final String INVOICE_SCREEN_PATH = "fxml/invoice.fxml";
 	public static final String INVOICE_MEDIA_SCREEN_PATH = "fxml/media_invoice.fxml";
 	public static final String PAYMENT_SCREEN_PATH = "fxml/payment.fxml";
