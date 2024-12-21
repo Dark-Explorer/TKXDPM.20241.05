@@ -18,8 +18,7 @@ import java.sql.SQLException;
 public class PaymentController extends BaseController implements TransactionResultListener {
 
 	private IPayment paymentService;
-	private int amount;
-	private String orderInfo;
+	private int orderId;
 
 	public PaymentController(IPayment vnPayService) {
 		this.paymentService = vnPayService;
@@ -29,7 +28,8 @@ public class PaymentController extends BaseController implements TransactionResu
 	 * Generate VNPay payment URL
 	 */
 
-	public void payOrder(int amount, String orderInfo) throws IOException, SQLException {
+	public void payOrder(int orderId, int amount, String orderInfo) throws IOException, SQLException {
+		this.orderId = orderId;
 		// Bắt đầu quy trình thanh toán
 		new VnPaySubsystemController(this).payOrder(amount, orderInfo);
 	}
@@ -38,7 +38,7 @@ public class PaymentController extends BaseController implements TransactionResu
 	public void onTransactionCompleted(PaymentTransaction transactionResult) {
 		if (transactionResult != null && transactionResult.isSuccess()) {
 			try {
-				transactionResult.save(1); // Lưu giao dịch vào cơ sở dữ liệu nếu thành công
+				transactionResult.save(orderId); // Lưu giao dịch vào cơ sở dữ liệu nếu thành công
 				emptyCart(); // Làm trống giỏ hàng
 				System.out.println("Lưu thành công");
 			} catch (SQLException e) {
