@@ -66,7 +66,7 @@ public class Order {
     }
 
     public RushInfo getRushInfo() {
-        return rushInfo;
+        return this.rushInfo;
     }
 
     public void setRushInfo(RushInfo rushInfo) {
