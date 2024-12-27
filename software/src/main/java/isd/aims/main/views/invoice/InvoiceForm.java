@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import isd.aims.main.InterbankSubsystem.IPayment;
 import isd.aims.main.InterbankSubsystem.VnPaySubsystem;
+import isd.aims.main.entity.info.DeliveryInfo;
 import isd.aims.main.exception.MediaNotAvailableException;
 import isd.aims.main.exception.PaymentException;
 import isd.aims.main.exception.ProcessInvoiceException;
@@ -68,7 +69,7 @@ public class InvoiceForm extends BaseForm {
 		btnConfirm.setOnMouseClicked(e -> {
 			LOGGER.info("Pay Order button clicked");
 			try {
-				requestToPayOrder();
+				requestToPayOrder(invoice.getOrder().getId());
 
 			} catch (IOException | SQLException exp) {
 				LOGGER.severe("Cannot pay the order, see the logs");
@@ -81,11 +82,11 @@ public class InvoiceForm extends BaseForm {
 
 	@SuppressWarnings("unchecked")
 	private void setInvoiceInfo(){
-		HashMap<String, String> deliveryInfo = invoice.getOrder().getDeliveryInfo();
-		name.setText(deliveryInfo.get("name"));
-		province.setText(deliveryInfo.get("province"));
-		instructions.setText(deliveryInfo.get("instructions"));
-		address.setText(deliveryInfo.get("address"));
+		DeliveryInfo deliveryInfo = invoice.getOrder().getDeliveryInfo();
+		name.setText(deliveryInfo.getName());
+		province.setText(deliveryInfo.getProvince());
+		instructions.setText(deliveryInfo.getInstruction());
+		address.setText(deliveryInfo.getAddress());
 		subtotal.setText(Utils.getCurrencyFormat(invoice.getOrder().getAmount()));
 		shippingFees.setText(Utils.getCurrencyFormat(invoice.getOrder().getShippingFees()));
 		int amount = invoice.getOrder().getAmount() + invoice.getOrder().getShippingFees();
@@ -105,12 +106,12 @@ public class InvoiceForm extends BaseForm {
 
 	}
 
-	public void requestToPayOrder() throws SQLException, IOException {
+	public void requestToPayOrder(int orderId) throws SQLException, IOException {
 		try {
 			// create placeOrderController and process the order
 			IPayment vnPayService = new VnPaySubsystem();
 			PaymentController payOrderController = new PaymentController(vnPayService);
-			payOrderController.payOrder(invoice.getAmount(), "Thanh toán hóa đơn AIMS");
+			payOrderController.payOrder(orderId, invoice.getAmount(), "Thanh toán hóa đơn AIMS");
 			this.stage.close();
 		} catch (MediaNotAvailableException e) {
 

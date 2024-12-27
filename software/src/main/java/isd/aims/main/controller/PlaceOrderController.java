@@ -2,7 +2,9 @@ package isd.aims.main.controller;
 
 import isd.aims.main.entity.cart.Cart;
 import isd.aims.main.entity.cart.CartMedia;
+import isd.aims.main.entity.info.DeliveryInfo;
 import isd.aims.main.entity.invoice.Invoice;
+import isd.aims.main.entity.media.Media;
 import isd.aims.main.entity.order.Order;
 import isd.aims.main.entity.order.OrderMedia;
 import isd.aims.main.utils.Utils;
@@ -84,18 +86,38 @@ public class PlaceOrderController extends BaseController{
     }
 
     public boolean validatePhoneNumber(String phoneNumber) {
-    	// TODO: your work
-    	return false;
+        if (phoneNumber == null || phoneNumber.charAt(0) != '0') return false;
+        char separator = 'k';
+        int isPreviousSeparator = 0;
+        for (char c : phoneNumber.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                if (c == '-' || c == '/' || c == '.') {
+                    if (isPreviousSeparator == 1) return false;
+                    isPreviousSeparator = 1;
+                    if (separator != 'k' && separator != c) return false;
+                    separator = c;
+                } else return false;
+            } else {
+                isPreviousSeparator = 0;
+            }
+        }
+        return true;
     }
 
     public boolean validateName(String name) {
-    	// TODO: your work
-    	return false;
+        if (name == null || name.length() > 30) return false;
+        for (char c : name.toCharArray()) {
+            if (!Character.isAlphabetic(c) && c != ' ') return false;
+        }
+        return true;
     }
 
     public boolean validateAddress(String address) {
-    	// TODO: your work
-    	return false;
+        if (address == null || address.length() > 100) return false;
+        for (char c : address.toCharArray()) {
+            if (!Character.isAlphabetic(c) && !Character.isDigit(c) && c != ' ' && c != '/') return false;
+        }
+        return true;
     }
 
 
@@ -105,9 +127,70 @@ public class PlaceOrderController extends BaseController{
      * @return shippingFee
      */
     public int calculateShippingFee(Order order){
-        Random rand = new Random();
-        int fees = (int)( ( (rand.nextFloat()*10)/100 ) * order.getAmount() );
-        LOGGER.info("Order Amount: " + order.getAmount() + " -- Shipping Fees: " + fees);
-        return fees;
+        int shippingFee = 0;
+        int totalValue = 0;
+        int numberOfRushItems = 0;
+
+        float weightOfHeaviestNoRushItem = 0f;
+        float weightOfHeaviestRushItem = 0f;
+
+        for (Object object : order.getlstOrderMedia()) {
+            OrderMedia om = (OrderMedia) object;
+            if (!om.isRush()) {
+                totalValue += om.getPrice() * om.getQuantity();
+                weightOfHeaviestNoRushItem = Math.max(weightOfHeaviestNoRushItem, om.getMedia().getWeight());
+            } else {
+                weightOfHeaviestRushItem = Math.max(weightOfHeaviestRushItem, om.getMedia().getWeight());
+                numberOfRushItems++;
+            }
+        }
+
+        shippingFee += calculateWithWeight(weightOfHeaviestNoRushItem, order.getDeliveryInfo().getProvince());
+        shippingFee += calculateWithWeight(weightOfHeaviestRushItem, order.getDeliveryInfo().getProvince());
+        shippingFee += 10000 * numberOfRushItems;
+
+        if (totalValue > 100000) {
+            shippingFee = Math.max(0, shippingFee - 25000);
+        }
+
+        return shippingFee;
+    }
+
+    private int calculateWithWeight(float weight, String province) {
+        if (weight == 0f) return 0;
+
+        int fee;
+        if (province.equals("Hà Nội") || province.equals("Hồ Chí Minh")) {
+            fee = 22000;
+            weight -= 3;
+        } else {
+            fee = 30000;
+            weight -= 0.5f;
+        }
+
+        if (weight > 0) {
+            fee += (int) (2500 * Math.ceil(weight * 2));
+        }
+
+        return fee;
+    }
+
+    public static void main(String[] args) throws SQLException {
+        Media media1 = new Media(1, "", "", "", "", "", 1.4f, "", 10000, 100, null, true);
+        Media media2 = new Media(2, "", "", "", "", "", 3.6f, "", 30000, 100, null, true);
+        Media media3 = new Media(3, "", "", "", "", "", 0.6f, "", 20000, 100, null, true);
+
+        OrderMedia om1 = new OrderMedia(media1, 2, 10000, true);
+        OrderMedia om2 = new OrderMedia(media2, 1, 10000, false);
+        OrderMedia om3 = new OrderMedia(media3, 1, 10000, true);
+
+        DeliveryInfo deliveryInfo = new DeliveryInfo("Nguyen Van A", "Ha Noi", "Hà Nội", "gfsayugauyfg", "0987654321", "gfsayugauyfg");
+        Order order = new Order();
+        order.addOrderMedia(om1);
+        order.addOrderMedia(om2);
+        order.addOrderMedia(om3);
+        order.setDeliveryInfo(deliveryInfo);
+
+        System.out.println(new PlaceOrderController().calculateShippingFee(order));
     }
 }

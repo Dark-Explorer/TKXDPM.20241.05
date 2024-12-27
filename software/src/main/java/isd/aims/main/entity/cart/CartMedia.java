@@ -21,6 +21,10 @@ public class CartMedia {
         this.isRush = isRush;
     }
 
+    public boolean checkIfAvailableForRush() {
+        return media.isAvailableForRush();
+    }
+
     public Media getMedia() {
         return this.media;
     }
@@ -31,6 +35,10 @@ public class CartMedia {
 
     public boolean isRush() {
         return isRush;
+    }
+
+    public void setRush(boolean isRush) {
+        this.isRush = isRush;
     }
 
     public int getQuantity() {

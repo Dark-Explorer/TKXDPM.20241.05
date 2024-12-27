@@ -23,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.CheckBox;
 
 public class MediaForm extends FXMLForm {
 
@@ -48,6 +49,9 @@ public class MediaForm extends FXMLForm {
 
 	@FXML
 	protected Label price;
+
+	@FXML
+	protected CheckBox rushOrderCheck;
 
 	@FXML
 	protected Label currency;
@@ -90,6 +94,24 @@ public class MediaForm extends FXMLForm {
 			} catch (SQLException exp) {
 				exp.printStackTrace();
 				throw new ViewCartException();
+			}
+		});
+
+		// Kiểm tra trạng thái rush order
+		if (cartMedia.checkIfAvailableForRush()) {
+			rushOrderCheck.setVisible(true);
+		} else {
+			rushOrderCheck.setVisible(false);
+		}
+
+		// Xử lý sự kiện khi người dùng check vào checkbox rushOrderCheck
+		rushOrderCheck.setOnAction(e -> {
+			if (rushOrderCheck.isSelected()) {
+				cartMedia.setRush(true);  // Cập nhật giá trị isRush khi chọn checkbox
+				LOGGER.info("Rush order selected for " + cartMedia.getMedia().getTitle());
+			} else {
+				cartMedia.setRush(false);  // Cập nhật giá trị isRush khi bỏ chọn checkbox
+				LOGGER.info("Rush order deselected for " + cartMedia.getMedia().getTitle());
 			}
 		});
 

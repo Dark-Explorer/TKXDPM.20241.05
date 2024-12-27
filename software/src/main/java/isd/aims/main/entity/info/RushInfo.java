@@ -15,4 +15,19 @@ public class RushInfo {
     public RushInfo getRushInfo() {
         return this;
     }
+
+    public String getInstruction() {
+        return instruction;
+    }
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
+    }
+
+    public LocalDateTime getTimeDelivery() {
+        return timeDelivery;
+    }
+
+    public void setTimeDelivery(LocalDateTime timeDelivery) {
+        this.timeDelivery = timeDelivery;
+    }
 }

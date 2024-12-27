@@ -1,5 +1,7 @@
 package isd.aims.main.entity.order;
 
+import isd.aims.main.entity.info.DeliveryInfo;
+import isd.aims.main.entity.info.RushInfo;
 import isd.aims.main.utils.Configs;
 
 import java.util.ArrayList;
@@ -10,8 +12,10 @@ public class Order {
 
     private int shippingFees;
     private List lstOrderMedia;
-    private HashMap<String, String> deliveryInfo;
+//    private HashMap<String, String> deliveryInfo;
     private Integer id;
+    private DeliveryInfo deliveryInfo;
+    private RushInfo rushInfo;
 
     public Order(){
         this.lstOrderMedia = new ArrayList<>();
@@ -45,12 +49,28 @@ public class Order {
         return shippingFees;
     }
 
-    public HashMap getDeliveryInfo() {
+//    public HashMap getDeliveryInfo() {
+//        return deliveryInfo;
+//    }
+
+//    public void setDeliveryInfo(HashMap deliveryInfo) {
+//        this.deliveryInfo = deliveryInfo;
+//    }
+
+    public DeliveryInfo getDeliveryInfo() {
         return deliveryInfo;
     }
 
-    public void setDeliveryInfo(HashMap deliveryInfo) {
+    public void setDeliveryInfo(DeliveryInfo deliveryInfo) {
         this.deliveryInfo = deliveryInfo;
+    }
+
+    public RushInfo getRushInfo() {
+        return this.rushInfo;
+    }
+
+    public void setRushInfo(RushInfo rushInfo) {
+        this.rushInfo = rushInfo;
     }
 
     public Integer getId() {
@@ -65,7 +85,7 @@ public class Order {
         double amount = 0;
         for (Object object : lstOrderMedia) {
             OrderMedia om = (OrderMedia) object;
-            amount += om.getPrice();
+            amount += om.getPrice() * om.getQuantity();
         }
         return (int) (amount + (Configs.PERCENT_VAT/100)*amount);
     }
