@@ -81,6 +81,8 @@ public class Order {
         this.id = id;
     }
 
+    // lớp order thực hiển cả việc quản lý thông tin và tính toán
+    // => nên tách logic tính toán ra khỏi lớp order  sang một  dịch vụ đặc biệt (ví dụ: orderService)
     public int getAmount(){
         double amount = 0;
         for (Object object : lstOrderMedia) {

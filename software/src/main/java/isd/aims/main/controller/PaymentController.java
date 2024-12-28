@@ -15,6 +15,7 @@ import java.sql.SQLException;
  * in our AIMS Software.
  *
  */
+
 public class PaymentController extends BaseController implements TransactionResultListener {
 
 	private IPayment paymentService;
@@ -34,6 +35,9 @@ public class PaymentController extends BaseController implements TransactionResu
 		new VnPaySubsystemController(this).payOrder(amount, orderInfo);
 	}
 
+	// Lớp PaymentController vừa xử lý luồng thanh toán, vừa chịu trách nhiệm làm trống giỏ hàng
+	// bằng cách gọi trực tiếp Cart.emptyCart().
+	// => Tách logic liên quan đến giỏ hàng vào một service riêng như CartService
 	@Override
 	public void onTransactionCompleted(PaymentTransaction transactionResult) {
 		if (transactionResult != null && transactionResult.isSuccess()) {

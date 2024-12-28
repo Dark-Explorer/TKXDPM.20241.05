@@ -17,6 +17,9 @@ public class BaseController {
      * @param media
      * @return CartMedia or null
      */
+    // Lớp BaseController không chỉ chịu trách nhiệm điều hướng (controller logic), mà còn trực tiếp
+    // xử lý logic liên quan đến Cart
+    // => Sử dụng một lớp trung gian như CartService với interface để trừu tượng hóa các thao tác liên quan đến Cart
     public CartMedia checkMediaInCart(Media media){
         return Cart.getCart().checkMediaInCart(media);
     }

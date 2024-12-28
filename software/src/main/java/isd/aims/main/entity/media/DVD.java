@@ -103,6 +103,9 @@ public class DVD extends Media {
                 + releasedDate + "'" + ", filmType='" + filmType + "'" + "}";
     }
 
+    // thực hiện nhiều nhiệm vụ: truy vấn sql, xử lý kết quả và tạo đối tượng
+    // => Tách logic truy vấn SQL và tạo đối tượng thành các phương thức riêng biệt để tăng tính tái sử dụng
+    // và dễ bảo trì.
     @Override
     public Media getMediaById(int id) throws SQLException {
         String sql = "SELECT * FROM "+

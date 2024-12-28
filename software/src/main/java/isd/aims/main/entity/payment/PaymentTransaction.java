@@ -23,6 +23,9 @@ public class PaymentTransaction {
 		this.createdAt = createdAt;
 	}
 
+	// sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
+	// => phụ thuộc vào lớp cơ sở dữ liệu
+	// => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ PaymentTransactionDAO )
 	public void save(int orderId) throws SQLException {
 		this.orderID = orderId;
 		String query = "INSERT INTO \"Transaction\" ( orderID, createAt, content, amount) " +
@@ -39,6 +42,10 @@ public class PaymentTransaction {
 		}
 	}
 
+
+	// sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
+	// => phụ thuộc vào lớp cơ sở dữ liệu
+	// => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ PaymentTransactionDAO )
 	public int checkPaymentByOrderId(int orderId) throws SQLException {
 		int count = 0;
 

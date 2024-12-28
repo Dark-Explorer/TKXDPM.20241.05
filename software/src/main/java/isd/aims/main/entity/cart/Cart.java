@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+// lớp chịu nhiều trách nhiệm: quản lý giỏ hàng, tính toán tổng số lượng, kiểm tra tính khả dụng, xử lý ngoại lệ.
+// => Tách trách nhiệm thành các lớp riêng như CartCalculator và ProductAvailabilityChecker
 public class Cart {
     
     private List<CartMedia> lstCartMedia;
@@ -33,6 +35,9 @@ public class Cart {
         return lstCartMedia;
     }
 
+    // Phương thức emptyCart() và checkAvailabilityOfProduct() có thể được gọi gần nhau
+    // trong một khoảng thời gian cụ thể (ví dụ, khi người dùng đặt hàng).
+    // => Tách chức năng kiểm tra tính khả dụng và xóa giỏ hàng thành các service độc lập
     public void emptyCart(){
         lstCartMedia.clear();
     }
@@ -52,7 +57,9 @@ public class Cart {
         }
         return total;
     }
-
+    // Lớp không dễ mở rộng vì logic kiểm tra tính khả dụng được viết cứng trong
+    // phương thức checkAvailabilityOfProduct
+    // => Sử dụng interface hoặc lớp trừu tượng để quản lý các quy tắc kiểm tra sản phẩm.
     public void checkAvailabilityOfProduct() throws SQLException{
         boolean allAvai = true;
         for (CartMedia object : lstCartMedia) {
