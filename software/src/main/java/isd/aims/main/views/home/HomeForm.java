@@ -21,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.scene.control.TextField;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,6 +60,9 @@ public class HomeForm extends BaseForm implements Initializable {
 
     @FXML
     private SplitMenuButton splitMenuBtnSearch;
+
+    @FXML
+    private TextField searchTextField;
 
     @SuppressWarnings("rawtypes")
     private List homeItems;
@@ -116,10 +120,35 @@ public class HomeForm extends BaseForm implements Initializable {
         });
 
         addMediaHome(this.homeItems);
-        addMenuItem(0, "Book", splitMenuBtnSearch);
-        addMenuItem(1, "DVD", splitMenuBtnSearch);
-        addMenuItem(2, "CD", splitMenuBtnSearch);
+        addMenuItem(0, "All", splitMenuBtnSearch);
+        addMenuItem(1, "Book", splitMenuBtnSearch);
+        addMenuItem(2, "DVD", splitMenuBtnSearch);
+        addMenuItem(3, "CD", splitMenuBtnSearch);
+
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            hboxMedia.getChildren().forEach(node -> {
+                VBox vBox = (VBox) node;
+                vBox.getChildren().clear();
+            });
+
+            if (newValue.trim().isEmpty()) {
+                addMediaHome(this.homeItems);
+                return;
+            }
+
+            List filteredItems = new ArrayList<>();
+            homeItems.forEach(me -> {
+                MediaForm media = (MediaForm) me;
+                if (media.getMedia().getTitle().toLowerCase().contains(newValue.toLowerCase())) {
+                    filteredItems.add(media);
+                }
+            });
+
+            addMediaHome(filteredItems);
+        });
     }
+
+
 
     public void setImage() {
         // fix image path caused by fxml
@@ -167,6 +196,12 @@ public class HomeForm extends BaseForm implements Initializable {
                 VBox vBox = (VBox) node;
                 vBox.getChildren().clear();
             });
+
+            // show all items if chose "All"
+            if (text.equals("All")) {
+                addMediaHome(this.homeItems);
+                return;
+            }
 
             // filter only media with the choosen category
             List filteredItems = new ArrayList<>();
