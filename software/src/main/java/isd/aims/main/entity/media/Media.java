@@ -1,5 +1,6 @@
 package isd.aims.main.entity.media;
 
+import isd.aims.main.dao.MediaDAO;
 import isd.aims.main.entity.db.DBConnection;
 import isd.aims.main.utils.Utils;
 
@@ -16,9 +17,6 @@ import java.util.logging.Logger;
  */
 public class Media {
 
-    private static Logger LOGGER = Utils.getLogger(Media.class.getName());
-
-    protected Statement stm;
     protected int id;
     protected String description;
     protected String title;
@@ -27,18 +25,21 @@ public class Media {
     protected String dimension;
     protected float weight;
     protected String warehouseEntryDate;
-    protected int value; // the real price of product (eg: 450)
-    protected int price; // the price which will be displayed on browser (eg: 500)
+    protected int value;
+    protected int price;
     protected int quantity;
     protected String type;
     protected String imageURL;
     protected boolean isAvailableForRush;
 
-    public Media() throws SQLException{
-        stm = DBConnection.getConnection().createStatement();
+    private MediaDAO mediaDAO;
+
+    public Media() {
+        this.mediaDAO = new MediaDAO();
     }
 
-    public Media (int id, String description, String title, String category, String barcode, String dimension, float weight, String warehouseEntryDate, int price, int quantity, String type, boolean isAvailableForRush) throws SQLException{
+    public Media(int id, String description, String title, String category, String barcode, String dimension, float weight, String warehouseEntryDate, int price, int quantity, String type, boolean isAvailableForRush) {
+        this();
         this.id = id;
         this.description = description;
         this.title = title;
@@ -51,73 +52,20 @@ public class Media {
         this.quantity = quantity;
         this.type = type;
         this.isAvailableForRush = isAvailableForRush;
-
-        //stm = DBConnection.getConnection().createStatement();
     }
 
-    public int getQuantity() throws SQLException{
-        int updated_quantity = getMediaById(id).quantity;
+    public int getQuantity() throws SQLException {
+        int updated_quantity = mediaDAO.getMediaById(id).quantity;
         this.quantity = updated_quantity;
         return updated_quantity;
     }
 
-    // sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
-    // => phụ thuộc vào lớp cơ sở dữ liệu
-    // => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ MediaDAO )
-    public Media getMediaById(int id) throws SQLException{
-        String sql = "SELECT * FROM Media ;";
-        Statement stm = DBConnection.getConnection().createStatement();
-        ResultSet res = stm.executeQuery(sql);
-		if(res.next()) {
-
-            return new Media()
-                .setId(res.getInt("id"))
-                .setTitle(res.getString("title"))
-                .setQuantity(res.getInt("quantity"))
-                .setCategory(res.getString("category"))
-                .setMediaURL(res.getString("imageUrl"))
-                .setPrice(res.getInt("price"))
-                .setType(res.getString("type"))
-                .setAvailableForRush(res.getBoolean("isAvailableForRush"))
-                .setWeight(res.getFloat("weight"));
-        }
-        return null;
+    public Media getMediaById(int id) throws SQLException {
+        return mediaDAO.getMediaById(id);
     }
 
-    // sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
-    // => phụ thuộc vào lớp cơ sở dữ liệu
-    // => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ MediaDAO )
-    public List getAllMedia() throws SQLException{
-        Statement stm = DBConnection.getConnection().createStatement();
-        ResultSet res = stm.executeQuery("select * from Media");
-        ArrayList medium = new ArrayList<>();
-        while (res.next()) {
-            Media media = new Media()
-                .setId(res.getInt("id"))
-                .setTitle(res.getString("title"))
-                .setQuantity(res.getInt("quantity"))
-                .setCategory(res.getString("category"))
-                .setMediaURL(res.getString("imageUrl"))
-                .setPrice(res.getInt("price"))
-                .setType(res.getString("type"))
-                .setAvailableForRush(res.getBoolean("isAvailableForRush"))
-                .setWeight(res.getFloat("weight"));
-            medium.add(media);
-        }
-        return medium;
-    }
-
-    // sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
-    // => phụ thuộc vào lớp cơ sở dữ liệu
-    // => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ MediaDAO )
-    public void updateMediaFieldById(String tbname, int id, String field, Object value) throws SQLException {
-        Statement stm = DBConnection.getConnection().createStatement();
-        if (value instanceof String){
-            value = "\"" + value + "\"";
-        }
-        stm.executeUpdate(" update " + tbname + " set" + " " 
-                          + field + "=" + value + " " 
-                          + "where id=" + id + ";");
+    public List<Media> getAllMedia() throws SQLException {
+        return mediaDAO.getAllMedia();
     }
 
     // getter and setter 
@@ -125,7 +73,7 @@ public class Media {
         return this.id;
     }
 
-    private Media setId(int id){
+    public Media setId(int id){
         this.id = id;
         return this;
     }
@@ -225,6 +173,5 @@ public class Media {
             ", type='" + type + "'" +
             ", imageURL='" + imageURL + "'" +
             "}";
-    }    
-
+    }
 }
