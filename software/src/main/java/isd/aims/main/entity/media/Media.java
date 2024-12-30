@@ -60,10 +60,17 @@ public class Media {
         return updated_quantity;
     }
 
+    // SOLID: SRP
+    // sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
+    // => phụ thuộc vào lớp cơ sở dữ liệu
+    // => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ MediaDAO )
     public Media getMediaById(int id) throws SQLException {
         return mediaDAO.getMediaById(id);
     }
 
+    // sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
+    // => phụ thuộc vào lớp cơ sở dữ liệu
+    // => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ MediaDAO )
     public List<Media> getAllMedia() throws SQLException {
         return mediaDAO.getAllMedia();
     }

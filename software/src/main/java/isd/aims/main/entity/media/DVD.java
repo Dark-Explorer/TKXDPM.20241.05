@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+// Lớp DVD có các phương thức liên quan đến thông tin chung về một DVD, nhưng chưa có sự nhóm lại các
+// => Communicational Cohesion
+// => Các phương thức có thể được nhóm lại thành các nhóm hợp lý hơn để tăng tính đóng gói và giảm sự phân tán
 public class DVD extends Media {
 
     String discType;
@@ -107,9 +110,12 @@ public class DVD extends Media {
                 + releasedDate + "'" + ", filmType='" + filmType + "'" + "}";
     }
 
-    // thực hiện nhiều nhiệm vụ: truy vấn sql, xử lý kết quả và tạo đối tượng
+    // SOLID: SRP
+    // thực hiện nhiều nhiệm vụ: truy vấn sql, xử lý kết quả và tạo đối tượng => Sequential Cohesion
     // => Tách logic truy vấn SQL và tạo đối tượng thành các phương thức riêng biệt để tăng tính tái sử dụng
     // và dễ bảo trì.
+    // Phương thức getMediaById không phù hợp với lớp DVD => Logical Cohesion
+    // => Tách ra lớp khác ( ví dụ: lớp DAO)
     @Override
     public Media getMediaById(int id) throws SQLException {
         return dvdDAO.getMediaById(id);

@@ -20,10 +20,10 @@ import java.util.logging.Logger;
  * @author nguyenlm
  */
 
-    // Lớp này chịu trách nhiệm xử lý luồng sự kiện đặt hàng, kiểm tra tính khả dụng, tạo hóa đơn, tính phí
-    // vận chuyển và validate thông tin giao hàng, dẫn đến đảm nhận quá nhiều trách nhiệm
-    // => Tách các trách nhiệm này thành các lớp hoặc service riêng, chẳng hạn: ValidationService (validate thông tin),
-    // ShippingService (tính phí giao hàng), và OrderService (xử lý đặt hàng).
+// Lớp này chịu trách nhiệm xử lý luồng sự kiện đặt hàng, kiểm tra tính khả dụng, tạo hóa đơn, tính phí
+// vận chuyển và validate thông tin giao hàng, dẫn đến đảm nhận quá nhiều trách nhiệm => SOLID: SRP
+// => Tách các trách nhiệm này thành các lớp hoặc service riêng, chẳng hạn: ValidationService (validate thông tin),
+// ShippingService (tính phí giao hàng), và OrderService (xử lý đặt hàng).
 public class PlaceOrderController extends BaseController{
 
     /**
@@ -46,7 +46,7 @@ public class PlaceOrderController extends BaseController{
      */
     @SuppressWarnings("unchecked")
     // Lớp này phụ thuộc trực tiếp vào Cart và các chi tiết implementation của nó.
-    // Điều này làm giảm khả năng thay đổi hoặc thay thế Cart.
+    // Điều này làm giảm khả năng thay đổi hoặc thay thế Cart. => SOLID: DIP
     // => Tạo interface trừu tượng (ví dụ: ICartService) để quản lý các thao tác trên giỏ hàng.
     // Controller sẽ phụ thuộc vào abstraction này thay vì chi tiết cụ thể của lớp Cart.
     public Order createOrder() throws SQLException{

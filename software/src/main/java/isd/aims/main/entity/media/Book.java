@@ -106,10 +106,11 @@ public class Book extends Media {
         return this;
     }
 
-    /* thực hiện nhiều nhiệm vụ: truy vấn sql, xử lý kết quả và tạo đối tượng
-    => Tách logic truy vấn SQL và tạo đối tượng thành các phương thức riêng biệt để tăng tính tái sử dụng
-    và dễ bảo trì.
-    */
+    // SOLID: SRP
+    // Cohesion: Sequential Cohesion
+    // thực hiện nhiều nhiệm vụ: truy vấn sql, xử lý kết quả và tạo đối tượng
+    // => Tách logic truy vấn SQL và tạo đối tượng thành các phương thức riêng biệt để tăng tính tái sử dụng
+    // và dễ bảo trì.
     @Override
     public Media getMediaById(int id) throws SQLException {
         return bookDAO.getMediaById(id);
