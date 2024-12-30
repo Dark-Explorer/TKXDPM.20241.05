@@ -5,6 +5,8 @@ import isd.aims.main.entity.db.DBConnection;
 import java.sql.*;
 import java.util.Date;
 
+// Phương thức save và checkPaymentByOrderId không tập trung vào nhiệm vụ chính => Logical Cohesion
+// Tách ra 1 lớp DAO khác chuyên xử lý các truy vấn cơ sở dữ liệu
 public class PaymentTransaction {
 	private String errorCode;
 	private String transactionId;
@@ -25,6 +27,10 @@ public class PaymentTransaction {
 		this.createdAt = createdAt;
 	}
 
+	// Content Coupling
+	// sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
+	// => phụ thuộc vào lớp cơ sở dữ liệu
+	// => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ PaymentTransactionDAO )
 	public void save(int orderId) throws SQLException {
 		this.orderID = orderId;
 		Statement stm = DBConnection.getConnection().createStatement();
@@ -41,6 +47,10 @@ public class PaymentTransaction {
 		}
 	}
 
+	// Content Coupling
+	// sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
+	// => phụ thuộc vào lớp cơ sở dữ liệu
+	// => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ PaymentTransactionDAO )
 	public int checkPaymentByOrderId(int orderId) throws SQLException {
 		int count = 0;
 

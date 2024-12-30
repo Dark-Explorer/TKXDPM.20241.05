@@ -17,6 +17,10 @@ public class BaseController {
      * @param media
      * @return CartMedia or null
      */
+    // Lớp phụ thuộc trực tiếp vào một implementation cụ thể (Cart) thay vì một abstraction  => SOLID: DIP
+    // Lớp BaseController không chỉ chịu trách nhiệm điều hướng (controller logic), mà còn trực tiếp
+    // xử lý logic liên quan đến Cart => Phụ thuộc vào lớp Cart => SOLID: OCP, SRP
+    // => Sử dụng một lớp trung gian như CartService với interface để trừu tượng hóa các thao tác liên quan đến Cart
     public CartMedia checkMediaInCart(Media media){
         return Cart.getCart().checkMediaInCart(media);
     }

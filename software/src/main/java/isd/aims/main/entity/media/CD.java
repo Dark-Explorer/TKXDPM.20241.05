@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+// Cohesion: Communicational Cohesion
+// các phương thức  như getArtist, getRecordLabel, getMusicType, getReleasedDate liên quan đến thông tin của CD
+// => Các phương thức có thể được nhóm lại thành các nhóm hợp lý hơn để tăng tính đóng gói và giảm sự phân tán
 public class CD extends Media {
 
     String artist;
@@ -70,6 +73,12 @@ public class CD extends Media {
                 + releasedDate + "'" + "}";
     }
 
+    // SOLID: SRP
+    // thực hiện nhiều nhiệm vụ: truy vấn sql, xử lý kết quả và tạo đối tượng => Sequential Cohesion
+    // => Tách logic truy vấn SQL và tạo đối tượng thành các phương thức riêng biệt để tăng tính tái sử dụng
+    // và dễ bảo trì.
+    // Phương thức getMediaById không phù hợp với lớp CD => Logical Cohesion
+    // => Tách ra lớp khác ( ví dụ: lớp DAO)
     @Override
     public Media getMediaById(int id) throws SQLException {
         String sql = "SELECT * FROM "+

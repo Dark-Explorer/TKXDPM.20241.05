@@ -17,6 +17,10 @@ public class Request {
         this.orderInfo = orderInfo;
     }
 
+    // Content Coupling
+    // phụ thuộc vào lớp VnPayConfig để lấy cấu hình thanh toán
+    // => Tách cấu hình ra thành một lớp riêng biệt hoặc truyền cấu hình này vào lớp Request từ bên ngoài.
+    //  (cho vào utils)
     public String buildQueryURL() throws IOException {
 
         String vnp_Version = "2.1.0";

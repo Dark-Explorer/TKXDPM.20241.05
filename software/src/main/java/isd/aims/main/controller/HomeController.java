@@ -19,6 +19,10 @@ public class HomeController extends BaseController{
      * @throws SQLException
      */
     @SuppressWarnings("rawtypes")
+    // SOLID: SRP
+    // trực tiếp gọi đến phương thức lấy dữ liệu Media từ cơ sở dữ liệu.
+    // => Sử dụng một lớp trung gian như MediaService với interface để trừu tượng hóa các
+    // thao tác liên quan đến Media
     public List getAllMedia() throws SQLException{
         return new Media().getAllMedia();
     }
