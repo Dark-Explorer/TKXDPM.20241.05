@@ -58,6 +58,14 @@
                         <Font name="Segoe UI Bold" size="24.0" />
                      </font>
                   </Label>
+                  <Label fx:id="currency" alignment="TOP_RIGHT" contentDisplay="CENTER"
+                     maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                     minWidth="-Infinity" prefHeight="39.0" prefWidth="172.0" text="VND"
+                     textAlignment="CENTER" textFill="#5091e6">
+                     <font>
+                        <Font name="Segoe UI" size="24.0" />
+                     </font>
+                  </Label>
                </children>
                <HBox.margin>
                   <Insets />

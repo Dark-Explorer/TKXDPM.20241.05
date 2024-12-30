@@ -101,6 +101,7 @@ CREATE TABLE "aims"."Transaction"(
   "orderID" INTEGER NOT NULL,
   "createAt" DATETIME NOT NULL,
   "content" VARCHAR(45) NOT NULL,
+  "amount" INTEGER NOT NULL,
   CONSTRAINT "fk_transaction_order"
     FOREIGN KEY("orderID")
     REFERENCES "Order"("id")

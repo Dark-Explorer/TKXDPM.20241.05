@@ -154,7 +154,7 @@ public class DeliveryForm extends BaseForm implements Initializable {
 			throw new InvalidDeliveryInfoException(e.getMessage());
 		}
 
-		DeliveryInfo deliveryInfo = new DeliveryInfo(nameText, phoneText, addressText, provinceText, instructionsText, "@gmail.com");
+		DeliveryInfo deliveryInfo = new DeliveryInfo(nameText, addressText, provinceText, instructionsText, phoneText, "@gmail.com");
 
 		// Handle rush information if applicable
     if (order.getRushInfo() != null) {
