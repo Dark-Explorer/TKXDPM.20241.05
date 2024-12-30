@@ -123,7 +123,7 @@ public class VnPaySubsystemController {
         String errorCode = response.getVnp_TransactionStatus();
         String transactionId = response.getVnp_TransactionNo();
         String transactionContent = response.getVnp_OrderInfo();
-        long amount = Long.parseLong(response.getVnp_Amount()) / 100;
+        int amount = Integer.parseInt(response.getVnp_Amount()) / 100;
         String createdAt = response.getVnp_PayDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 

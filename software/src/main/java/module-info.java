@@ -3,7 +3,6 @@ module isd.aims.main {
     requires javafx.fxml;
     requires java.sql;
     requires javafx.web;
-    requires org.slf4j;
 
     opens isd.aims.main to javafx.fxml;
     opens isd.aims.main.views to javafx.fxml;
