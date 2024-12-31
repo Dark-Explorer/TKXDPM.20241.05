@@ -83,6 +83,7 @@ public class CD extends Media {
     // và dễ bảo trì.
     // Phương thức getMediaById không phù hợp với lớp CD => Logical Cohesion
     // => Tách ra lớp khác ( ví dụ: lớp DAO)
+    // FIXED
     @Override
     public Media getMediaById(int id) throws SQLException {
         return cdDAO.getMediaById(id);

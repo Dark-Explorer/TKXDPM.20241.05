@@ -45,6 +45,7 @@ public class PlaceOrderController extends BaseController{
      * @throws SQLException
      */
     @SuppressWarnings("unchecked")
+    // TODO
     // Lớp này phụ thuộc trực tiếp vào Cart và các chi tiết implementation của nó.
     // Điều này làm giảm khả năng thay đổi hoặc thay thế Cart. => SOLID: DIP
     // => Tạo interface trừu tượng (ví dụ: ICartService) để quản lý các thao tác trên giỏ hàng.
@@ -182,24 +183,5 @@ public class PlaceOrderController extends BaseController{
         }
 
         return fee;
-    }
-
-    public static void main(String[] args) throws SQLException {
-        Media media1 = new Media(1, "", "", "", "", "", 1.4f, "", 10000, 100, null, true);
-        Media media2 = new Media(2, "", "", "", "", "", 3.6f, "", 30000, 100, null, true);
-        Media media3 = new Media(3, "", "", "", "", "", 0.6f, "", 20000, 100, null, true);
-
-        OrderMedia om1 = new OrderMedia(media1, 2, 10000, true);
-        OrderMedia om2 = new OrderMedia(media2, 1, 10000, false);
-        OrderMedia om3 = new OrderMedia(media3, 1, 10000, true);
-
-        DeliveryInfo deliveryInfo = new DeliveryInfo("Nguyen Van A", "Ha Noi", "Hà Nội", "gfsayugauyfg", "0987654321", "gfsayugauyfg");
-        Order order = new Order();
-        order.addOrderMedia(om1);
-        order.addOrderMedia(om2);
-        order.addOrderMedia(om3);
-        order.setDeliveryInfo(deliveryInfo);
-
-        System.out.println(new PlaceOrderController().calculateShippingFee(order));
     }
 }

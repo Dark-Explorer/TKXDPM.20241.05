@@ -61,16 +61,18 @@ public class Media {
     }
 
     // SOLID: SRP
-    // sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
+    // sử dụng lớp DBConnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
     // => phụ thuộc vào lớp cơ sở dữ liệu
-    // => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ MediaDAO )
+    // => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc (ví dụ MediaDAO)
+    // FIXED
     public Media getMediaById(int id) throws SQLException {
         return mediaDAO.getMediaById(id);
     }
 
-    // sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
+    // sử dụng lớp DBConnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
     // => phụ thuộc vào lớp cơ sở dữ liệu
-    // => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ MediaDAO )
+    // => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc (ví dụ MediaDAO)
+    // FIXED
     public List<Media> getAllMedia() throws SQLException {
         return mediaDAO.getAllMedia();
     }
@@ -139,20 +141,8 @@ public class Media {
         return description;
     }
 
-    public String getBarcode() {
-        return barcode;
-    }
-
     public float getWeight() {
         return weight;
-    }
-
-    public String getDimension() {
-        return dimension;
-    }
-
-    public String getWarehouseEntryDate() {
-        return warehouseEntryDate;
     }
 
     public boolean isAvailableForRush() {

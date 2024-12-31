@@ -20,6 +20,7 @@ public class HomeController extends BaseController{
      */
 
     @SuppressWarnings("rawtypes")
+    // TODO
     // SOLID: SRP
     // trực tiếp gọi đến phương thức lấy dữ liệu Media từ cơ sở dữ liệu.
     // => Sử dụng một lớp trung gian như MediaService với interface để trừu tượng hóa các

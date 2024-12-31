@@ -17,6 +17,7 @@ public class Request {
         this.orderInfo = orderInfo;
     }
 
+    // TODO
     // Content Coupling
     // phụ thuộc vào lớp VnPayConfig để lấy cấu hình thanh toán
     // => Tách cấu hình ra thành một lớp riêng biệt hoặc truyền cấu hình này vào lớp Request từ bên ngoài.

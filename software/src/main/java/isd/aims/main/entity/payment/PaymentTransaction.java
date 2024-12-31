@@ -5,6 +5,7 @@ import isd.aims.main.entity.db.DBConnection;
 import java.sql.*;
 import java.util.Date;
 
+// TODO
 // Phương thức save và checkPaymentByOrderId không tập trung vào nhiệm vụ chính => Logical Cohesion
 // Tách ra 1 lớp DAO khác chuyên xử lý các truy vấn cơ sở dữ liệu
 public class PaymentTransaction {
@@ -25,6 +26,7 @@ public class PaymentTransaction {
 		this.createdAt = createdAt;
 	}
 
+	// TODO
 	// Content Coupling
 	// sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
 	// => phụ thuộc vào lớp cơ sở dữ liệu
@@ -45,7 +47,7 @@ public class PaymentTransaction {
 		}
 	}
 
-
+	// TODO
 	// Content Coupling
 	// sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
 	// => phụ thuộc vào lớp cơ sở dữ liệu
@@ -69,11 +71,9 @@ public class PaymentTransaction {
 	}
 
 	public boolean isSuccess() {
-		// Assuming a null errorCode or an errorCode "00" means success
 		return errorCode == null || "00".equals(errorCode);
 	}
 
-	// Get a message based on the success or failure of the transaction
 	public String getMessage() {
 		if (isSuccess()) {
 			return "Payment was successful.";

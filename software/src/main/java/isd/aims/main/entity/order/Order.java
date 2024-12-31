@@ -12,7 +12,6 @@ public class Order {
 
     private int shippingFees;
     private List lstOrderMedia;
-//    private HashMap<String, String> deliveryInfo;
     private Integer id;
     private DeliveryInfo deliveryInfo;
     private RushInfo rushInfo;
@@ -49,14 +48,6 @@ public class Order {
         return shippingFees;
     }
 
-//    public HashMap getDeliveryInfo() {
-//        return deliveryInfo;
-//    }
-
-//    public void setDeliveryInfo(HashMap deliveryInfo) {
-//        this.deliveryInfo = deliveryInfo;
-//    }
-
     public DeliveryInfo getDeliveryInfo() {
         return deliveryInfo;
     }
@@ -81,10 +72,11 @@ public class Order {
         this.id = id;
     }
 
+    // TODO
     // SOLID: SRP
     // Content Coupling
     // lớp order thực hiển cả việc quản lý thông tin và tính toán
-    // => nên tách logic tính toán ra khỏi lớp order  sang một  dịch vụ đặc biệt (ví dụ: orderService)
+    // => nên tách logic tính toán ra khỏi lớp order sang một dịch vụ đặc biệt (ví dụ: orderService)
     public int getAmount(){
         double amount = 0;
         for (Object object : lstOrderMedia) {

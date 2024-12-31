@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO
 // SOLID: SRP
 // lớp chịu nhiều trách nhiệm: quản lý giỏ hàng, tính toán tổng số lượng, kiểm tra tính khả dụng, xử lý ngoại lệ.
 // => Tách trách nhiệm thành các lớp riêng như CartCalculator và ProductAvailabilityChecker
@@ -36,6 +37,7 @@ public class Cart {
         return lstCartMedia;
     }
 
+    // TODO
     // Phương thức emptyCart() và checkAvailabilityOfProduct() có thể được gọi gần nhau
     // trong một khoảng thời gian cụ thể (ví dụ, khi người dùng đặt hàng). => Cohesion: Temporal Cohesion
     // => Tách chức năng kiểm tra tính khả dụng và xóa giỏ hàng thành các service độc lập

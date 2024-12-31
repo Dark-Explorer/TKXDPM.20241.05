@@ -17,6 +17,7 @@ public class BaseController {
      * @param media
      * @return CartMedia or null
      */
+    // TODO
     // Lớp phụ thuộc trực tiếp vào một implementation cụ thể (Cart) thay vì một abstraction  => SOLID: DIP
     // Lớp BaseController không chỉ chịu trách nhiệm điều hướng (controller logic), mà còn trực tiếp
     // xử lý logic liên quan đến Cart => Phụ thuộc vào lớp Cart => SOLID: OCP, SRP

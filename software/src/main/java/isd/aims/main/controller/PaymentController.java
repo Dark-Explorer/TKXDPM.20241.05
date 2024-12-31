@@ -35,6 +35,7 @@ public class PaymentController extends BaseController implements TransactionResu
 		new VnPaySubsystemController(this).payOrder(amount, orderInfo);
 	}
 
+	// TODO
 	// Lớp này phụ thuộc trực tiếp vào lớp Cart => SOLID: DIP
 	// => Thay vì sử dụng trực tiếp Cart, hãy sử dụng một interface
 	// Lớp PaymentController vừa xử lý luồng thanh toán, vừa chịu trách nhiệm làm trống giỏ hàng

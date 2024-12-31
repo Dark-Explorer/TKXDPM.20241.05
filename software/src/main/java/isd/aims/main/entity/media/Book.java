@@ -52,65 +52,12 @@ public class Book extends Media {
         return this;
     }
 
-    public String getCoverType() {
-        return this.coverType;
-    }
-
-    public Book setCoverType(String coverType) {
-        this.coverType = coverType;
-        return this;
-    }
-
-    public String getPublisher() {
-        return this.publisher;
-    }
-
-    public Book setPublisher(String publisher) {
-        this.publisher = publisher;
-        return this;
-    }
-
-    public Date getPublishDate() {
-        return this.publishDate;
-    }
-
-    public Book setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
-        return this;
-    }
-
-    public int getNumOfPages() {
-        return this.numOfPages;
-    }
-
-    public Book setNumOfPages(int numOfPages) {
-        this.numOfPages = numOfPages;
-        return this;
-    }
-
-    public String getLanguage() {
-        return this.language;
-    }
-
-    public Book setLanguage(String language) {
-        this.language = language;
-        return this;
-    }
-
-    public String getBookCategory() {
-        return this.bookCategory;
-    }
-
-    public Book setBookCategory(String bookCategory) {
-        this.bookCategory = bookCategory;
-        return this;
-    }
-
     // SOLID: SRP
     // Cohesion: Sequential Cohesion
     // thực hiện nhiều nhiệm vụ: truy vấn sql, xử lý kết quả và tạo đối tượng
     // => Tách logic truy vấn SQL và tạo đối tượng thành các phương thức riêng biệt để tăng tính tái sử dụng
     // và dễ bảo trì.
+    // FIXED
     @Override
     public Media getMediaById(int id) throws SQLException {
         return bookDAO.getMediaById(id);

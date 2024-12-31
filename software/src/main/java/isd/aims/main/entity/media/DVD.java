@@ -116,6 +116,7 @@ public class DVD extends Media {
     // và dễ bảo trì.
     // Phương thức getMediaById không phù hợp với lớp DVD => Logical Cohesion
     // => Tách ra lớp khác ( ví dụ: lớp DAO)
+    // FIXED
     @Override
     public Media getMediaById(int id) throws SQLException {
         return dvdDAO.getMediaById(id);
