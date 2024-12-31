@@ -1,13 +1,14 @@
 package isd.aims.main.entity.payment;
 
+import isd.aims.main.dao.PaymentDAO;
 import isd.aims.main.entity.db.DBConnection;
 
 import java.sql.*;
 import java.util.Date;
 
-// TODO
 // Phương thức save và checkPaymentByOrderId không tập trung vào nhiệm vụ chính => Logical Cohesion
 // Tách ra 1 lớp DAO khác chuyên xử lý các truy vấn cơ sở dữ liệu
+// FIXED
 public class PaymentTransaction {
 	private String errorCode;
 	private String transactionId;
@@ -15,6 +16,12 @@ public class PaymentTransaction {
 	private long amount;
 	private Integer orderID;
 	private Date createdAt;
+
+	PaymentDAO paymentDAO;
+
+	public PaymentTransaction() {
+		this.paymentDAO = new PaymentDAO();
+	}
 
 	public PaymentTransaction(String errorCode, String transactionId, String transactionContent,
 							  long amount, Date createdAt) {
@@ -26,48 +33,25 @@ public class PaymentTransaction {
 		this.createdAt = createdAt;
 	}
 
-	// TODO
 	// Content Coupling
 	// sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
 	// => phụ thuộc vào lớp cơ sở dữ liệu
-	// => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ PaymentTransactionDAO )
+	// => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc (ví dụ PaymentTransactionDAO)
+	// FIXED
 	public void save(int orderId) throws SQLException {
 		this.orderID = orderId;
-		String query = "INSERT INTO \"Transaction\" ( orderID, createAt, content, amount) " +
-				"VALUES ( ?, ?, ?, ?)";
-		try (PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(query)) {
-			preparedStatement.setInt(1, orderId);
-			preparedStatement.setDate(2, new java.sql.Date(createdAt.getTime()));
-			preparedStatement.setString(3,transactionContent );
-			preparedStatement.setLong(4, amount);
-
-			preparedStatement.executeUpdate();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
+		PaymentTransaction paymentTransaction = new PaymentTransaction();
+		paymentTransaction.paymentDAO.saveTransaction(orderId, createdAt, transactionContent, amount);
 	}
 
-	// TODO
 	// Content Coupling
 	// sử dụng lớp DBconnection để kết nối và thực hiện các thao tác với cơ sở dữ liệu
 	// => phụ thuộc vào lớp cơ sở dữ liệu
-	// => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc ( ví dụ PaymentTransactionDAO )
+	// => tách riêng ra 1 lớp riêng để giảm sự phụ thuộc (ví dụ PaymentTransactionDAO)
+	// FIXED
 	public int checkPaymentByOrderId(int orderId) throws SQLException {
-		int count = 0;
-
-		String query = "SELECT COUNT(*) FROM Transaction WHERE orderID = ?";
-
-		try (PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(query)) {
-			preparedStatement.setInt(1, orderId);
-
-			try (ResultSet resultSet = preparedStatement.executeQuery()) {
-				if (resultSet.next()) {
-					count = resultSet.getInt(1);
-				}
-			}
-		}
-
-		return count;
+		PaymentTransaction paymentTransaction = new PaymentTransaction();
+		return paymentTransaction.paymentDAO.countTransactionsByOrderId(orderId);
 	}
 
 	public boolean isSuccess() {
