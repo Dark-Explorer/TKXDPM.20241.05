@@ -37,10 +37,6 @@ public class Cart {
         return lstCartMedia;
     }
 
-    // TODO
-    // Phương thức emptyCart() và checkAvailabilityOfProduct() có thể được gọi gần nhau
-    // trong một khoảng thời gian cụ thể (ví dụ, khi người dùng đặt hàng). => Cohesion: Temporal Cohesion
-    // => Tách chức năng kiểm tra tính khả dụng và xóa giỏ hàng thành các service độc lập
     public void emptyCart(){
         lstCartMedia.clear();
     }
@@ -60,10 +56,7 @@ public class Cart {
         }
         return total;
     }
-    // SOLID: OCP
-    // Lớp không dễ mở rộng vì logic kiểm tra tính khả dụng được viết cứng trong
-    // phương thức checkAvailabilityOfProduct
-    // => Sử dụng interface hoặc lớp trừu tượng để quản lý các quy tắc kiểm tra sản phẩm.
+
     public void checkAvailabilityOfProduct() throws SQLException{
         boolean allAvai = true;
         for (CartMedia object : lstCartMedia) {
