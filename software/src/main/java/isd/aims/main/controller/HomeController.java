@@ -11,8 +11,6 @@ import java.util.List;
  * @author nguyenlm
  */
 public class HomeController extends BaseController{
-
-
     /**
      * this method gets all Media in DB and return back to home to display
      * @return List[Media]
@@ -20,9 +18,6 @@ public class HomeController extends BaseController{
      */
 
     @SuppressWarnings("rawtypes")
-    // trực tiếp gọi đến phương thức lấy dữ liệu Media từ cơ sở dữ liệu.
-    // => Sử dụng một lớp trung gian như MediaService với interface để trừu tượng hóa các
-    // thao tác liên quan đến Media
     public List getAllMedia() throws SQLException{
         return new Media().getAllMedia();
     }

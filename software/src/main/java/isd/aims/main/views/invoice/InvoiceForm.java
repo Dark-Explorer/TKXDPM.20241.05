@@ -84,6 +84,7 @@ public class InvoiceForm extends BaseForm {
 	private void setInvoiceInfo(){
 		DeliveryInfo deliveryInfo = invoice.getOrder().getDeliveryInfo();
 		name.setText(deliveryInfo.getName());
+		phone.setText(deliveryInfo.getPhoneNumber());
 		province.setText(deliveryInfo.getProvince());
 		instructions.setText(deliveryInfo.getInstruction());
 		address.setText(deliveryInfo.getAddress());

@@ -107,6 +107,7 @@ public class DeliveryForm extends BaseForm implements Initializable {
 		// Lấy thông tin từ các trường
 		String nameText = name.getText();
 		String phoneText = phone.getText();
+		System.out.println(phoneText);
 		String addressText = address.getText();
 		String instructionsText = instructions.getText();
 		String provinceText = province.getValue();
@@ -258,7 +259,6 @@ public class DeliveryForm extends BaseForm implements Initializable {
 	}
 
 	public void notifyError(){
-		// TODO: implement later on if we need
 	}
 
 	private void showAlert(String message) {

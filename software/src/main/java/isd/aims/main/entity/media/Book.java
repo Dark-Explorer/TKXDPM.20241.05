@@ -1,5 +1,6 @@
 package isd.aims.main.entity.media;
 
+import isd.aims.main.dao.BookDAO;
 import isd.aims.main.entity.db.DBConnection;
 
 import java.sql.ResultSet;
@@ -18,8 +19,10 @@ public class Book extends Media {
     String language;
     String bookCategory;
 
-    public Book() throws SQLException{
+    BookDAO bookDAO;
 
+    public Book() throws SQLException{
+        this.bookDAO = new BookDAO();
     }
 
     public Book(int id, String description, String title, String category, String barcode, String dimension, float weight, String warehouseEntryDate, int price, int quantity, String type, boolean isAvailableForRush, String author,
@@ -49,108 +52,21 @@ public class Book extends Media {
         return this;
     }
 
-    public String getCoverType() {
-        return this.coverType;
-    }
-
-    public Book setCoverType(String coverType) {
-        this.coverType = coverType;
-        return this;
-    }
-
-    public String getPublisher() {
-        return this.publisher;
-    }
-
-    public Book setPublisher(String publisher) {
-        this.publisher = publisher;
-        return this;
-    }
-
-    public Date getPublishDate() {
-        return this.publishDate;
-    }
-
-    public Book setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
-        return this;
-    }
-
-    public int getNumOfPages() {
-        return this.numOfPages;
-    }
-
-    public Book setNumOfPages(int numOfPages) {
-        this.numOfPages = numOfPages;
-        return this;
-    }
-
-    public String getLanguage() {
-        return this.language;
-    }
-
-    public Book setLanguage(String language) {
-        this.language = language;
-        return this;
-    }
-
-    public String getBookCategory() {
-        return this.bookCategory;
-    }
-
-    public Book setBookCategory(String bookCategory) {
-        this.bookCategory = bookCategory;
-        return this;
-    }
-
+    // SOLID: SRP
+    // Cohesion: Sequential Cohesion
     // thực hiện nhiều nhiệm vụ: truy vấn sql, xử lý kết quả và tạo đối tượng
     // => Tách logic truy vấn SQL và tạo đối tượng thành các phương thức riêng biệt để tăng tính tái sử dụng
     // và dễ bảo trì.
+    // FIXED
     @Override
     public Media getMediaById(int id) throws SQLException {
-        String sql = "SELECT * FROM "+
-                     "aims.Book " +
-                     "INNER JOIN aims.Media " +
-                     "ON Media.id = Book.id " +
-                     "where Media.id = " + id + ";";
-        Statement stm = DBConnection.getConnection().createStatement();
-        ResultSet res = stm.executeQuery(sql);
-		if(res.next()) {
-
-            // from Media table
-            String title = "";
-            String type = res.getString("type");
-            String description = res.getString("description");
-            String barcode = res.getString("barcode");
-            String dimension = res.getString("dimension");
-            float weight = res.getFloat("weight");
-            String warehouseEntryDate = res.getString("warehouseEntryDate");
-            int price = res.getInt("price");
-            String category = res.getString("category");
-            int quantity = res.getInt("quantity");
-            boolean isAvailableForRush = res.getBoolean("isAvailableForRush");
-
-            // from Book table
-            String author = res.getString("author");
-            String coverType = res.getString("coverType");
-            String publisher = res.getString("publisher");
-            Date publishDate = res.getDate("publishDate");
-            int numOfPages = res.getInt("numOfPages");
-            String language = res.getString("language");
-            String bookCategory = res.getString("bookCategory");
-            
-            return new Book(id, description, title, category, barcode, dimension, weight, warehouseEntryDate, price, quantity, type, isAvailableForRush, author, coverType, publisher, publishDate, numOfPages, language, bookCategory);
-            
-		} else {
-			throw new SQLException();
-		}
+        return bookDAO.getMediaById(id);
     }
 
     @Override
     public List getAllMedia() {
-        return null;
+        return bookDAO.getAllMedia();
     }
-
 
     @Override
     public String toString() {

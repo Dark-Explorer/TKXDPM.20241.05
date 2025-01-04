@@ -5,6 +5,7 @@ import isd.aims.main.InterbankSubsystem.vnPay.VnPaySubsystemController;
 import isd.aims.main.entity.payment.PaymentTransaction;
 import isd.aims.main.entity.cart.Cart;
 import isd.aims.main.listener.TransactionResultListener;
+import isd.aims.main.service.CartService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -35,15 +36,16 @@ public class PaymentController extends BaseController implements TransactionResu
 		new VnPaySubsystemController(this).payOrder(amount, orderInfo);
 	}
 
-	// Lớp PaymentController vừa xử lý luồng thanh toán, vừa chịu trách nhiệm làm trống giỏ hàng
-	// bằng cách gọi trực tiếp Cart.emptyCart().
+	// Lớp này phụ thuộc trực tiếp vào lớp Cart => SOLID: DIP
+	// => Sử dụng trực tiếp Cart bằng cách gọi trực tiếp Cart.emptyCart(). => SOLID: SRP
 	// => Tách logic liên quan đến giỏ hàng vào một service riêng như CartService
+	// FIXED
 	@Override
 	public void onTransactionCompleted(PaymentTransaction transactionResult) {
 		if (transactionResult != null && transactionResult.isSuccess()) {
 			try {
 				transactionResult.save(orderId); // Lưu giao dịch vào cơ sở dữ liệu nếu thành công
-				emptyCart(); // Làm trống giỏ hàng
+				CartService.emptyCart();
 				System.out.println("Lưu thành công");
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -52,8 +54,4 @@ public class PaymentController extends BaseController implements TransactionResu
 			System.out.println("Giao dịch thất bại: " + (transactionResult != null ? transactionResult.getMessage() : "Lỗi không xác định"));
 		}
 	}
-
-	public void emptyCart(){
-        Cart.getCart().emptyCart();
-    }
 }
