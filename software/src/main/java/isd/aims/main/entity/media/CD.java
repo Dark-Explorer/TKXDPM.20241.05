@@ -10,6 +10,7 @@ import java.util.List;
 // Cohesion: Communicational Cohesion
 // các phương thức  như getArtist, getRecordLabel, getMusicType, getReleasedDate liên quan đến thông tin của CD
 // => Các phương thức có thể được nhóm lại thành các nhóm hợp lý hơn để tăng tính đóng gói và giảm sự phân tán
+// FIXED
 public class CD extends Media {
 
     String artist;
@@ -32,42 +33,6 @@ public class CD extends Media {
         this.musicType = musicType;
         this.releasedDate = releasedDate;
         this.trackList = trackList;
-    }
-
-    public String getArtist() {
-        return this.artist;
-    }
-
-    public CD setArtist(String artist) {
-        this.artist = artist;
-        return this;
-    }
-
-    public String getRecordLabel() {
-        return this.recordLabel;
-    }
-
-    public CD setRecordLabel(String recordLabel) {
-        this.recordLabel = recordLabel;
-        return this;
-    }
-
-    public String getMusicType() {
-        return this.musicType;
-    }
-
-    public CD setMusicType(String musicType) {
-        this.musicType = musicType;
-        return this;
-    }
-
-    public Date getReleasedDate() {
-        return this.releasedDate;
-    }
-
-    public CD setReleasedDate(Date releasedDate) {
-        this.releasedDate = releasedDate;
-        return this;
     }
 
     @Override

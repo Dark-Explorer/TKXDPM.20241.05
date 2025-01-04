@@ -10,6 +10,7 @@ import java.util.List;
 // Lớp DVD có các phương thức liên quan đến thông tin chung về một DVD, nhưng chưa có sự nhóm lại các
 // => Communicational Cohesion
 // => Các phương thức có thể được nhóm lại thành các nhóm hợp lý hơn để tăng tính đóng gói và giảm sự phân tán
+// FIXED
 public class DVD extends Media {
 
     String discType;
@@ -38,69 +39,6 @@ public class DVD extends Media {
         this.releasedDate = releasedDate;
         this.filmType = filmType;
         this.language = language;
-    }
-
-    public String getDiscType() {
-        return this.discType;
-    }
-
-    public DVD setDiscType(String discType) {
-        this.discType = discType;
-        return this;
-    }
-
-    public String getDirector() {
-        return this.director;
-    }
-
-    public DVD setDirector(String director) {
-        this.director = director;
-        return this;
-    }
-
-    public int getRuntime() {
-        return this.runtime;
-    }
-
-    public DVD setRuntime(int runtime) {
-        this.runtime = runtime;
-        return this;
-    }
-
-    public String getStudio() {
-        return this.studio;
-    }
-
-    public DVD setStudio(String studio) {
-        this.studio = studio;
-        return this;
-    }
-
-    public String getSubtitles() {
-        return this.subtitles;
-    }
-
-    public DVD setSubtitles(String subtitles) {
-        this.subtitles = subtitles;
-        return this;
-    }
-
-    public Date getReleasedDate() {
-        return this.releasedDate;
-    }
-
-    public DVD setReleasedDate(Date releasedDate) {
-        this.releasedDate = releasedDate;
-        return this;
-    }
-
-    public String getFilmType() {
-        return this.filmType;
-    }
-
-    public DVD setFilmType(String filmType) {
-        this.filmType = filmType;
-        return this;
     }
 
     @Override

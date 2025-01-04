@@ -96,10 +96,6 @@ public class Media {
         return this;
     }
 
-    public String getCategory() {
-        return this.category;
-    }
-
     public Media setCategory(String category) {
         this.category = category;
         return this;
@@ -126,10 +122,6 @@ public class Media {
     public Media setQuantity(int quantity) {
         this.quantity = quantity;
         return this;
-    }
-
-    public String getType() {
-        return this.type;
     }
 
     public Media setType(String type) {
