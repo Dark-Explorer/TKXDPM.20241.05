@@ -2,23 +2,22 @@ package isd.aims.main.controller;
 
 import isd.aims.main.entity.cart.Cart;
 import isd.aims.main.entity.cart.CartMedia;
-import isd.aims.main.entity.info.DeliveryInfo;
 import isd.aims.main.entity.invoice.Invoice;
-import isd.aims.main.entity.media.Media;
 import isd.aims.main.entity.order.Order;
 import isd.aims.main.entity.order.OrderMedia;
+import isd.aims.main.service.CartService;
 import isd.aims.main.utils.Utils;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.logging.Logger;
 
 /**
  * This class controls the flow of place order usecase in our AIMS project
  * @author nguyenlm
  */
+
 public class PlaceOrderController extends BaseController{
 
     /**
@@ -30,8 +29,8 @@ public class PlaceOrderController extends BaseController{
      * This method checks the avalibility of product when user click PlaceOrder button
      * @throws SQLException
      */
-    public void placeOrder() throws SQLException{
-        Cart.getCart().checkAvailabilityOfProduct();
+    public void checkCartAvailability() throws SQLException{
+        CartService.checkCartAvailability();
     }
 
     /**
@@ -40,6 +39,11 @@ public class PlaceOrderController extends BaseController{
      * @throws SQLException
      */
     @SuppressWarnings("unchecked")
+    // Lớp này phụ thuộc trực tiếp vào Cart và các chi tiết implementation của nó.
+    // Điều này làm giảm khả năng thay đổi hoặc thay thế Cart. => SOLID: DIP
+    // => Tạo interface trừu tượng (ví dụ: ICartService) để quản lý các thao tác trên giỏ hàng.
+    // Controller sẽ phụ thuộc vào abstraction này thay vì chi tiết cụ thể của lớp Cart.
+    // FIXED
     public Order createOrder() throws SQLException{
         Order order = new Order();
         for (Object object : Cart.getCart().getListMedia()) {
@@ -173,24 +177,5 @@ public class PlaceOrderController extends BaseController{
         }
 
         return fee;
-    }
-
-    public static void main(String[] args) throws SQLException {
-        Media media1 = new Media(1, "", "", "", "", "", 1.4f, "", 10000, 100, null, true);
-        Media media2 = new Media(2, "", "", "", "", "", 3.6f, "", 30000, 100, null, true);
-        Media media3 = new Media(3, "", "", "", "", "", 0.6f, "", 20000, 100, null, true);
-
-        OrderMedia om1 = new OrderMedia(media1, 2, 10000, true);
-        OrderMedia om2 = new OrderMedia(media2, 1, 10000, false);
-        OrderMedia om3 = new OrderMedia(media3, 1, 10000, true);
-
-        DeliveryInfo deliveryInfo = new DeliveryInfo("Nguyen Van A", "Ha Noi", "Hà Nội", "gfsayugauyfg", "0987654321", "gfsayugauyfg");
-        Order order = new Order();
-        order.addOrderMedia(om1);
-        order.addOrderMedia(om2);
-        order.addOrderMedia(om3);
-        order.setDeliveryInfo(deliveryInfo);
-
-        System.out.println(new PlaceOrderController().calculateShippingFee(order));
     }
 }

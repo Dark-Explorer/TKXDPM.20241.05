@@ -12,7 +12,6 @@ public class Order {
 
     private int shippingFees;
     private List lstOrderMedia;
-//    private HashMap<String, String> deliveryInfo;
     private Integer id;
     private DeliveryInfo deliveryInfo;
     private RushInfo rushInfo;
@@ -48,14 +47,6 @@ public class Order {
     public int getShippingFees() {
         return shippingFees;
     }
-
-//    public HashMap getDeliveryInfo() {
-//        return deliveryInfo;
-//    }
-
-//    public void setDeliveryInfo(HashMap deliveryInfo) {
-//        this.deliveryInfo = deliveryInfo;
-//    }
 
     public DeliveryInfo getDeliveryInfo() {
         return deliveryInfo;

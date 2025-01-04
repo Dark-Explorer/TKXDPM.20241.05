@@ -110,7 +110,7 @@ public class CartForm extends BaseForm {
 				return;
 			}
 
-			placeOrderController.placeOrder();
+			placeOrderController.checkCartAvailability();
 
 			// display available media
 			displayCartWithMediaAvailability();
