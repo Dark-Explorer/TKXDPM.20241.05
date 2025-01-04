@@ -46,36 +46,12 @@ public class DeliveryInfo {
         return instruction;
     }
 
-    public void setInstruction(String instruction) {
-        this.instruction = instruction;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getProvince() {
         return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public DeliveryInfo getDeliveryInfo() {
-        return this;
     }
 
 

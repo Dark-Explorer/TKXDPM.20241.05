@@ -23,8 +23,4 @@ public class Invoice {
     public int getAmount() {
         return amount;
     }
-
-    public void saveInvoice(){
-        
-    }
 }
