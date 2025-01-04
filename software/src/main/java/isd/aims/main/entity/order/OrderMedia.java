@@ -50,4 +50,7 @@ public class OrderMedia {
         this.price = price;
     }
 
+    public boolean isRush() {
+        return this.isRush;
+    }
 }

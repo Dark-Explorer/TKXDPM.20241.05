@@ -18,8 +18,40 @@ public class DeliveryInfo {
         this.email = email;
     }
 
-    public DeliveryInfo getDeliveryInfo() {
-        return this;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getInstruction() {
+        return instruction;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getProvince() {
+        return province;
     }
 
 
